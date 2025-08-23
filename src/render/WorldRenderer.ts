@@ -1,22 +1,31 @@
 import type { World } from "../engine/World";
+import { AnimalRenderer } from "./AnimalRenderer";
 import { WORLD_BACKGROUND_COLOR, WORLD_EDGE_COLOR } from "./Const";
+import { PlantRenderer } from "./PlantRenderer";
 
 export class WorldRenderer {
-    private canvas: HTMLCanvasElement;
+    private readonly plantRenderer: PlantRenderer;
+    private readonly animalRenderer: AnimalRenderer;
+    private readonly ctx: CanvasRenderingContext2D;
 
     constructor(canvas: HTMLCanvasElement) {
-        this.canvas = canvas;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+            throw new Error("Failed to get canvas 2D context");
+        }
+        this.ctx = ctx;
+        this.plantRenderer = new PlantRenderer(this.ctx);
+        this.animalRenderer = new AnimalRenderer(this.ctx);
     }
 
     render(world: World) {
-        const ctx = this.canvas.getContext("2d");
-        if (!ctx) {
-            return;
-        }
-        ctx.fillStyle = WORLD_BACKGROUND_COLOR;
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.fillStyle = WORLD_BACKGROUND_COLOR;
+        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-        ctx.strokeStyle = WORLD_EDGE_COLOR;
-        ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.strokeStyle = WORLD_EDGE_COLOR;
+        this.ctx.strokeRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+        this.plantRenderer.render(world.plants);
+        this.animalRenderer.render(world.animals);
     }
 }

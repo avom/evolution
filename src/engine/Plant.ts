@@ -7,12 +7,13 @@ export class Plant extends Organism {
     private seedsProduced = 0;
 
     constructor(x: number, y: number, birth: number, 
+        generation: number,
         private seeder: PlantSeeder) {
-        super(x, y, birth);
+        super(x, y, birth, generation);
     }
 
     update(t: number): void {
-        const dt = t - this.t0;
+        const dt = t - this.t;
         if (dt < 0) {
             return;
         }
@@ -22,7 +23,7 @@ export class Plant extends Organism {
             for (let i = 0; i < PLANT_SEEDING_SEED_COUNT; i++) {
                 const seedX = this.x + 2 * Math.random() * range - range;
                 const seedY = this.y + 2 * Math.random() * range - range;
-                const seed = new Plant(seedX, seedY, t, this.seeder);
+                const seed = new Plant(seedX, seedY, t, this.generation + 1, this.seeder);
                 this.seeder.seed(seed);
                 this.seedsProduced++;
             }

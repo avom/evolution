@@ -1,14 +1,16 @@
 export class Organism {
 
-    private pos: { x: number; y: number; };
+    public pos: { x: number; y: number; };
     public readonly birth: number;
-    protected t0: number;
+    protected t: number;
     private alive = true;
 
-    constructor(x: number, y: number, birth: number) {
+    constructor(x: number, y: number, birth: number, 
+        public readonly generation: number = 1) {
+
         this.pos = { x, y };
         this.birth = birth;
-        this.t0 = birth;
+        this.t = birth;
     }
 
     get x() {
@@ -20,11 +22,11 @@ export class Organism {
     }
 
     update(t: number) {
-        this.t0 = Math.max(this.t0, t);
+        this.t = Math.max(this.t, t);
     }
 
     getEnergy(t: number): number {
-        return (t - this.t0) * 10;
+        return (t - this.t) * 10;
     }
 
     isAlive(): boolean {
