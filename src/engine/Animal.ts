@@ -1,3 +1,4 @@
+import type { ArtificialDNA } from "./ArtificialDNA";
 import { Organism } from "./Organism";
 
 
@@ -15,9 +16,18 @@ export class Animal extends Organism {
         energy: 0
     };
 
+    private readonly lengthFactor: number;
+    private readonly widthFactor: number;
+
     constructor(x: number, y: number, birth: number, generation: number, 
-        public readonly energy: number) {
+        public readonly energy: number,
+        private direction: number,
+        private readonly dna: ArtificialDNA) {
         super(x, y, birth, generation);
+
+        const genes = dna.getGenes();
+        this.lengthFactor = genes[0].value;
+        this.widthFactor = genes[1].value;
     }
 
     update(t: number): void {
@@ -43,6 +53,14 @@ export class Animal extends Organism {
 
     get getDelta() {
         return this.delta;
+    }
+
+    getDirection(): number {
+        return this.direction;
+    }
+
+    get width() {
+        return this.widthFactor
     }
 
     private mass(): number {

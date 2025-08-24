@@ -33,5 +33,6 @@ function createRandomAnimal(width: number, height: number) {
     const y = Math.floor(Math.random() * height);
     const birth = 0;
     const generation = 1;
-    return new Animal(x, y, birth, generation, ANIMAL_INITIAL_ENERGY);
+    const direction = Math.random() * 2 * Math.PI;
+    return new Animal(x, y, birth, generation, ANIMAL_INITIAL_ENERGY, direction);
 }

@@ -4,27 +4,26 @@ export class Cell {
   private energy = 0;
 
   constructor(
-    private radiusRatio: number, 
+    private lengthFactor: number,
+    private widthFactor: number,
     private growthFactor: number) {}
 
   get length(): number {
-    // S = pi * a * b
-    // a = b * k, where k = radius ratio
-    // S = pi * a^2 / k
-    // a = sqrt(S * k / pi)
-    // length = 2 * a
+    // S = pi * (l / 2) * (w / 2)
+    // l * w = 4 * S / pi
+    // l / w = lf / wf => w = l * wf / lf
+    // l * l = 4 * S / pi * lf / wf
+    // l = sqrt(4 * S / pi * lf / wf)
     const area = energyToArea(this.energy);
-    return Math.sqrt((area * this.radiusRatio) / Math.PI) * 2;
+    return Math.sqrt(4 * area / Math.PI * this.lengthFactor / this.widthFactor);
   }
 
   get width(): number {
-    // S = pi * a * b
-    // b = a / k, where k = radius ratio
-    // S = pi * b^2 * k
-    // b = sqrt(S / (pi * k))
-    // width = 2 * b
+    // l / w = lf / wf => l = w * lf / wf
+    // w * w = 4 * S / pi * wf / lf
+    // w = sqrt(4 * S / pi * wf / lf)
     const area = energyToArea(this.energy);
-    return Math.sqrt(area / (Math.PI * this.radiusRatio)) * 2;
+    return Math.sqrt(4 * area / Math.PI * this.widthFactor / this.lengthFactor);
   }
 
     addEnergy(energy: number): void {
