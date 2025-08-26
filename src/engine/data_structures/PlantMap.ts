@@ -34,4 +34,28 @@ export class PlantMap {
             this.plants[row][col] = null;
         }
     }
+
+    public getClosestInRange(x: number, y: number, r: number): Plant | null {
+        const col = Math.floor(x / this.plotSize);
+        const row = Math.floor(y / this.plotSize);
+        const range = Math.ceil(r / this.plotSize);
+
+        let closest: Plant | null = null;
+        let closestDistSq = r * r;
+
+        for (let dy = -range; dy <= range; dy++) {
+            for (let dx = -range; dx <= range; dx++) {
+                const plot = this.plants[row + dy]?.[col + dx];
+                if (plot) {
+                    const distSq = (plot.x - x) * (plot.x - x) + (plot.y - y) * (plot.y - y);
+                    if (distSq < closestDistSq) {
+                        closest = plot;
+                        closestDistSq = distSq;
+                    }
+                }
+            }
+        }
+
+        return closest;
+    }
 }

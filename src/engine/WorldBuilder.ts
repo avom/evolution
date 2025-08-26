@@ -1,5 +1,7 @@
 import { Animal } from "./Animal";
+import { ArtificialDNA } from "./ArtificialDNA";
 import { ANIMAL_INITIAL_ENERGY, PLANT_ENERGY_GAIN_PER_SECOND, PLANT_INITIAL_DENSITY, PLANT_SEED_ENERGY, PLANT_SEEDING_ENERGY } from "./Config";
+import { Gene } from "./Gene";
 import { Plant } from "./Plant";
 import type { PlantSeeder } from "./PlantSeeder";
 import { World } from "./World";
@@ -34,5 +36,18 @@ function createRandomAnimal(width: number, height: number) {
     const birth = 0;
     const generation = 1;
     const direction = Math.random() * 2 * Math.PI;
-    return new Animal(x, y, birth, generation, ANIMAL_INITIAL_ENERGY, direction);
+    const dna: ArtificialDNA = new ArtificialDNA([
+        new Gene(Math.random()), // length
+        new Gene(Math.random()), // width
+    ]);
+    
+    return new Animal({
+        x,
+        y,
+        birth,
+        generation,
+        energy: ANIMAL_INITIAL_ENERGY,
+        direction,
+        dna
+    });
 }
