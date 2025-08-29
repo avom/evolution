@@ -1,3 +1,4 @@
+import { Action } from "./Actions";
 import { Animal } from "./Animal";
 import { ArtificialDNA } from "./ArtificialDNA";
 import { ANIMAL_INITIAL_ENERGY, PLANT_ENERGY_GAIN_PER_SECOND, PLANT_INITIAL_DENSITY, PLANT_SEED_ENERGY, PLANT_SEEDING_ENERGY } from "./Config";
@@ -6,7 +7,7 @@ import { Plant } from "./Plant";
 import type { PlantSeeder } from "./PlantSeeder";
 import { World } from "./World";
 
-export function buildWorld(width: number, height: number) {
+export function buildWorld2(width: number, height: number) {
     const world = new World({ width, height });
     const seeder = world.getSeeder();
     const initialPlantCount = Math.floor(width * height * PLANT_INITIAL_DENSITY);
@@ -50,4 +51,21 @@ function createRandomAnimal(width: number, height: number) {
         direction,
         dna
     });
+}
+
+export function buildWorld(width: number, height: number): Action[] {
+    const result: Action[] = [];
+
+    const world = new World({ width, height });
+    const seeder = world.getSeeder();
+    const initialPlantCount = Math.floor(width * height * PLANT_INITIAL_DENSITY);
+
+    for (let i = 0; i < initialPlantCount; i++) {
+        const plant = createRandomPlant(width, height, seeder);
+        world.addPlant(plant);
+    }
+
+    world.addAnimal(createRandomAnimal(width, height));
+
+    return result;
 }

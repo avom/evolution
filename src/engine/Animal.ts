@@ -1,3 +1,4 @@
+import { Action } from "./Actions";
 import type { ArtificialDNA } from "./ArtificialDNA";
 import { ANIMAL_DEFAULT_MOVEMENT_SPEED } from "./Config";
 import { Organism } from "./Organism";
@@ -51,25 +52,28 @@ export class Animal extends Organism {
     this.dna = dna;
   }
 
-  update(t: number): void {
-    if (this.t >= t) {
-      return;
-    }
-
-    const vx = 2 * ANIMAL_DEFAULT_MOVEMENT_SPEED * (Math.random() - 0.5);
-    const vy = 2 * ANIMAL_DEFAULT_MOVEMENT_SPEED * (Math.random() - 0.5);
-
-    this.delta = {
-      x: vx,
-      y: vy,
-      energy: 0.001 * this.mass() * Math.sqrt(vx * vx + vy * vy),
-    };
-
-    const dt = t - this.t;
-    this.pos.x += vx * dt;
-    this.pos.y += vy * dt;
-
+  update(t: number): Action | null {
     super.update(t);
+    return null;
+
+    // if (this.t >= t) {
+    //   return;
+    // }
+
+    // const vx = 2 * ANIMAL_DEFAULT_MOVEMENT_SPEED * (Math.random() - 0.5);
+    // const vy = 2 * ANIMAL_DEFAULT_MOVEMENT_SPEED * (Math.random() - 0.5);
+
+    // this.delta = {
+    //   x: vx,
+    //   y: vy,
+    //   energy: 0.001 * this.mass() * Math.sqrt(vx * vx + vy * vy),
+    // };
+
+    // const dt = t - this.t;
+    // this.pos.x += vx * dt;
+    // this.pos.y += vy * dt;
+
+    // super.update(t);
   }
 
   get getDelta() {

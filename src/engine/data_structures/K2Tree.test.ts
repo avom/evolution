@@ -23,10 +23,12 @@ describe("K2Tree", () => {
       const sut = new K2Tree<K2TreeItem>(100, 100);
       sut.add({ x: 1, y: 10 });
       for (let x = 0; x < 50; x++) {
-        sut.add({ x, y: 100 });
+        sut.add({ x, y: 99 });
       }
-      
-      expect(sut.containsInRange(50, 10, 50)).toBe(true);
+
+      const returnValue = sut.containsInRange(50, 10, 50);
+
+      expect(returnValue).toBe(true);
     });
   });
 

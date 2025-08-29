@@ -1,3 +1,7 @@
+import { Action } from "./Actions";
+
+export type OrganismId = number;
+
 export class Organism {
 
     public pos: { x: number; y: number; };
@@ -5,7 +9,9 @@ export class Organism {
     protected t: number;
     private alive = true;
 
-    constructor(x: number, y: number, birth: number, 
+    constructor(
+        public readonly id: OrganismId,
+        x: number, y: number, birth: number,
         public readonly generation: number = 1) {
 
         this.pos = { x, y };
@@ -21,12 +27,12 @@ export class Organism {
         return this.pos.y;
     }
 
-    update(t: number) {
-        this.t = Math.max(this.t, t);
+    update(_t: number): Action[] {
+        return [];
     }
 
-    getEnergy(t: number): number {
-        return (t - this.t) * 10;
+    get energy(): number {
+        return (this.t - this.birth) * 10;
     }
 
     isAlive(): boolean {
@@ -35,5 +41,8 @@ export class Organism {
 
     kill(): void {
         this.alive = false;
+    }
+
+    handleAction(action: Action): void {
     }
 }

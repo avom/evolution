@@ -1,8 +1,12 @@
+import { Action } from "./Actions";
 import { PLANT_ENERGY_GAIN_PER_SECOND, PLANT_SEED_ENERGY, PLANT_SEEDING_ENERGY, PLANT_SEEDING_RANGE, PLANT_SEEDING_SEED_COUNT } from "./Config";
 import { Organism } from "./Organism";
 import type { PlantSeeder } from "./PlantSeeder";
 
 export class Plant extends Organism {
+}
+
+export class SeedingPlant extends Plant {
 
     private seedsProduced = 0;
 
@@ -12,22 +16,23 @@ export class Plant extends Organism {
         super(x, y, birth, generation);
     }
 
-    update(t: number): void {
-        const dt = t - this.t;
-        if (dt < 0) {
-            return;
-        }
+    update(t: number): Action[] {
+        return super.update(t);
+        // const dt = t - this.t;
+        // if (dt < 0) {
+        //     return [];
+        // }
 
-        while (this.getEnergy(t) >= PLANT_SEEDING_ENERGY) {
-            const range = PLANT_SEEDING_RANGE;
-            for (let i = 0; i < PLANT_SEEDING_SEED_COUNT; i++) {
-                const seedX = this.x + 2 * Math.random() * range - range;
-                const seedY = this.y + 2 * Math.random() * range - range;
-                const seed = new Plant(seedX, seedY, t, this.generation + 1, this.seeder);
-                this.seeder.seed(seed);
-                this.seedsProduced++;
-            }
-        }
+        // while (this.getEnergy(t) >= PLANT_SEEDING_ENERGY) {
+        //     const range = PLANT_SEEDING_RANGE;
+        //     for (let i = 0; i < PLANT_SEEDING_SEED_COUNT; i++) {
+        //         const seedX = this.x + 2 * Math.random() * range - range;
+        //         const seedY = this.y + 2 * Math.random() * range - range;
+        //         const seed = new SeedingPlant(seedX, seedY, t, this.generation + 1, this.seeder);
+        //         this.seeder.seed(seed);
+        //         this.seedsProduced++;
+        //     }
+        // }
     }
 
     getEnergy(t: number): number {
@@ -35,5 +40,25 @@ export class Plant extends Organism {
         let energy = PLANT_SEED_ENERGY + age * PLANT_ENERGY_GAIN_PER_SECOND;
         energy -= this.seedsProduced * PLANT_SEED_ENERGY;
         return energy;
+    }
+}
+
+export class RootedPlant extends Plant {
+
+    private energy: number;
+
+    constructor(x: number, y: number, birth: number, generation: number, energy: number) {
+        super(x, y, birth, generation);
+        this.energy = energy;
+    }
+
+    update(t: number): Action[] {
+        
+        return [];
+    }
+
+    getEnergy(t: number): number {
+        const age = t - this.birth;
+        return PLANT_SEED_ENERGY + age * PLANT_ENERGY_GAIN_PER_SECOND;
     }
 }
